@@ -1,4 +1,4 @@
-<template>
+<template >
   <view class="container">
     <!-- 顶部日期切换 -->
     <view class="header">
@@ -271,51 +271,60 @@ export default {
 </script>
 
 <style>
+
 .container { 
-  background-color: #f5f5f5; 
+  background-color: #eef5ea;  /* 更亮的灰绿 */
   min-height: 100vh; 
   padding-bottom: 70px; 
 }
 
 /* ========== 顶部日期 ========== */
 .header { 
-  background-color: #fff; 
+  background-color: #b8d4b0;
   padding: 15px 0; 
   margin-bottom: 10px; 
+
+  
 }
 .date-nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 30px;
+  gap: 20px;
+  padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 .arrow {
-  font-size: 20px;
-  color: #007aff;
-  padding: 5px 15px;
+  font-size: 18px;
+  color: #ffffff;
+  padding: 5px 10px;
+  min-width: 30px;
+  text-align: center;
 }
 .date-info {
   text-align: center;
+  min-width: 120px;
 }
 .date-text { 
   font-size: 18px; 
   font-weight: bold; 
-  color: #333; 
+  color: #ffffff; 
   display: block;
 }
 .week-text {
   font-size: 12px;
-  color: #999;
+  color: #f0f7ed; 
   margin-top: 2px;
 }
 
 /* ========== 餐次卡片 ========== */
 .meal-card { 
-  background-color: #fff; 
+  background-color: #f7faf5;  /* 很浅的绿白 */
   margin: 10px; 
-  border-radius: 8px; 
+  border-radius: 12px; 
   padding: 15px; 
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+  box-shadow: 0 2px 8px rgba(100, 140, 100, 0.06); 
 }
 .meal-header {
   display: flex;
@@ -326,11 +335,11 @@ export default {
 .title { 
   font-size: 16px; 
   font-weight: bold; 
-  color: #333; 
+  color: #6a9a6a;
 }
 .meal-cal {
   font-size: 14px;
-  color: #ff6b6b;
+  color: #8bc48b;
   font-weight: bold;
 }
 .food-list { 
@@ -341,7 +350,7 @@ export default {
   justify-content: space-between; 
   align-items: center;
   padding: 10px 0; 
-  border-bottom: 1px solid #f0f0f0; 
+  border-bottom: 1px solid #dce8d6;
 }
 .food-info {
   display: flex;
@@ -350,24 +359,25 @@ export default {
 }
 .food-name { 
   font-size: 14px;
-  color: #333; 
+  color: #6a9a6a;
 }
 .food-cal { 
   font-size: 12px;
-  color: #ff6b6b; 
+  color: #8bc48b;
   margin-top: 2px;
 }
 .delete-btn {
-  color: #999;
+  color: #c8b0b0;
   font-size: 16px;
   padding: 5px 10px;
 }
 .add-btn { 
   margin-top: 5px; 
   font-size: 14px; 
-  background-color: #f0f0f0; 
-  color: #666; 
-  border: none; 
+  background-color: #dce8d6;
+  color: #6a9a6a;
+  border: none;
+  border-radius: 6px;
 }
 
 /* ========== 底部占位 ========== */
@@ -375,30 +385,30 @@ export default {
   height: 70px;
 }
 
-/* ========== 底部总卡路里（关键修改）========== */
+/* ========== 底部总卡路里 ========== */
 .total-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   height: 60px;
-  background: linear-gradient(135deg, #fff 0%, #f8f8f8 100%);
+  background: linear-gradient(135deg, #b8d4b0 0%, #8bc48b 100%);
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
-  z-index: 9999;  /* 提高到最高层 */
-  border-top: 2px solid #ff6b6b;
+  box-shadow: 0 -4px 15px rgba(100, 140, 100, 0.12);
+  z-index: 9999;
+  border-top: 2px solid #8bc48b;
 }
 .total-label {
   font-size: 14px;
-  color: #666;
+  color: #f0f7ed;
 }
 .total-num {
   font-size: 24px;
   font-weight: bold;
-  color: #ff6b6b;
+  color: #ffffff;
 }
 
 /* ========== 弹窗 ========== */
@@ -408,7 +418,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(100, 140, 100, 0.25);
   z-index: 998;
 }
 .popup-box {
@@ -416,19 +426,19 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #fff;
-  border-radius: 12px;
+  background-color: #f7faf5;
+  border-radius: 16px;
   padding: 25px;
   width: 280px;
   z-index: 999;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 32px rgba(100, 140, 100, 0.15);
 }
 .popup-title { 
   font-size: 18px; 
   font-weight: bold; 
   text-align: center; 
   margin-bottom: 20px; 
-  color: #333; 
+  color: #6a9a6a;
 }
 .form-item { 
   margin-bottom: 15px; 
@@ -436,20 +446,22 @@ export default {
 .label { 
   display: block; 
   font-size: 14px; 
-  color: #666; 
+  color: #8bc48b;
   margin-bottom: 8px; 
 }
 .input { 
   width: 100%; 
   height: 40px; 
-  border: 1px solid #e0e0e0; 
-  border-radius: 6px; 
+  background-color: #eef5ea;
+  border: 1px solid #dce8d6;
+  border-radius: 8px; 
   padding: 0 12px; 
   font-size: 14px; 
+  color: #6a9a6a;
   box-sizing: border-box; 
 }
 .placeholder { 
-  color: #ccc; 
+  color: #a8c8a8;
 }
 .btn-group { 
   display: flex; 
@@ -461,9 +473,9 @@ export default {
   flex: 1; 
   height: 40px; 
   line-height: 40px; 
-  background-color: #007aff; 
-  color: #fff; 
-  border-radius: 6px; 
+  background-color: #8bc48b;
+  color: #ffffff;
+  border-radius: 8px; 
   font-size: 14px; 
   border: none; 
 }
@@ -471,9 +483,9 @@ export default {
   flex: 1; 
   height: 40px; 
   line-height: 40px; 
-  background-color: #f0f0f0; 
-  color: #666; 
-  border-radius: 6px; 
+  background-color: #dce8d6;
+  color: #6a9a6a;
+  border-radius: 8px; 
   font-size: 14px; 
   border: none; 
 }

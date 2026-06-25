@@ -1,3 +1,8 @@
+<!-- ============================================================ -->
+<!-- 这是一个"每日卡路里记录"小程序页面 -->
+<!-- 功能：记录每天早餐、午餐、晚餐、加餐的食物和卡路里 -->
+<!-- 技术：uni-app 框架（类似 Vue.js 语法） -->
+<!-- ============================================================ -->
 <template >
   <view class="container">
     <!-- 顶部日期切换 -->
@@ -16,9 +21,11 @@
     <view class="meal-card">
       <view class="meal-header">
         <view class="title">早餐</view>
-        <text class="meal-cal">{{getMealCalorie('B')}} kcal</text>
+        <text class="meal-cal">{{getMealCalorie('B')}} kcal</text> // 计算早餐的总卡路里
       </view>
+	  // 已添加的食物列表
       <view class="food-list">
+		 <!-- v-for：循环遍历 breakfastList 数组，显示每条食物记录 -->
         <view class="food-item" v-for="item in currentData.breakfastList" :key="item.id">
           <view class="food-info">
             <text class="food-name">{{item.name}}</text>
@@ -85,11 +92,14 @@
     </view>
 
     <!-- 底部占位 -->
+	// 因为底部有固定的总卡路里栏，需要留出空间避免内容被遮挡
     <view class="bottom-space"></view>
 
     <!-- 弹窗 -->
     <view class="mask" v-if="showPopup" @click="closePopup"></view>
+	//  弹窗主体：输入食物名称和卡路里
     <view class="popup-box" v-if="showPopup">
+		// 弹窗标题，根据当前餐次动态变化
       <view class="popup-title">{{popupTitle}}</view>
       
       <view class="form-item">
@@ -108,7 +118,7 @@
       </view>
     </view>
 
-    <!-- ========== 底部总卡路里（移到最后，确保在最上层）========== -->
+    <!-- ========== 底部总卡路里========== -->
     <view class="total-bar">
       <text class="total-label">今日总摄入</text>
       <text class="total-num">{{totalCalorie}} kcal</text>
@@ -121,24 +131,27 @@
 export default {
   data() {
     return {
-      showPopup: false,
-      currentMealType: '',
-      formData: { name: '', calorie: '' },
-      currentDateObj: new Date(),
-      allData: {}
+      showPopup: false,           // 弹窗显示/隐藏
+      currentMealType: '',        // 当前餐次：B早餐 L午餐 D晚餐 S加餐
+      formData: { name: '', calorie: '' },  // 弹窗表单数据
+      currentDateObj: new Date(), // 当前日期对象
+      allData: {}                 // 所有日期的数据
     }
   },
   computed: {
+    // 格式化日期为 YYYY-MM-DD
     currentDate() {
       const y = this.currentDateObj.getFullYear();
       const m = String(this.currentDateObj.getMonth() + 1).padStart(2, '0');
       const d = String(this.currentDateObj.getDate()).padStart(2, '0');
       return `${y}-${m}-${d}`;
     },
+    // 计算星期几
     weekDay() {
       const days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
       return days[this.currentDateObj.getDay()];
     },
+    // 获取当前日期的数据，若不存在则自动创建
     currentData() {
       if (!this.allData[this.currentDate]) {
         this.$set(this.allData, this.currentDate, {
@@ -150,6 +163,7 @@ export default {
       }
       return this.allData[this.currentDate];
     },
+    // 计算今日总卡路里
     totalCalorie() {
       const data = this.currentData;
       let total = 0;
@@ -158,17 +172,19 @@ export default {
       });
       return total;
     },
+    // 弹窗标题
     popupTitle() {
       const titles = { 'B': '添加早餐', 'L': '添加午餐', 'D': '添加晚餐', 'S': '添加加餐' };
       return titles[this.currentMealType] || '添加食物';
     }
   },
-  
+
   onLoad() {
-    this.loadData();
+    this.loadData();  // 页面加载时读取本地数据
   },
 
   methods: {
+    // 从本地存储读取历史数据
     loadData() {
       try {
         const saved = uni.getStorageSync('calorieData');
@@ -180,6 +196,7 @@ export default {
       }
     },
 
+    // 保存数据到本地存储
     saveData() {
       try {
         uni.setStorageSync('calorieData', JSON.stringify(this.allData));
@@ -188,12 +205,14 @@ export default {
       }
     },
 
+    // 切换日期的实现
     changeDate(days) {
       const newDate = new Date(this.currentDateObj);
       newDate.setDate(newDate.getDate() + days);
       this.currentDateObj = newDate;
     },
 
+    // 计算某餐次的总卡路里
     getMealCalorie(type) {
       const data = this.currentData;
       let list = [];
@@ -206,17 +225,20 @@ export default {
       return list.reduce((sum, item) => sum + Number(item.calorie), 0);
     },
 
+    // 打开弹窗
     openPopup(type) {
       this.currentMealType = type;
       this.formData = { name: '', calorie: '' };
       this.showPopup = true;
     },
 
+    // 关闭弹窗
     closePopup() {
       this.showPopup = false;
       this.formData = { name: '', calorie: '' };
     },
 
+    // 提交表单，保存新食物
     submitForm() {
       if (!this.formData.name.trim()) {
         uni.showToast({ title: '请输入食物名称', icon: 'none' });
@@ -242,6 +264,7 @@ export default {
       uni.showToast({ title: '保存成功', icon: 'success' });
     },
 
+    // 删除食物
     deleteFood(type, id) {
       uni.showModal({
         title: '确认删除',
@@ -270,10 +293,11 @@ export default {
 }
 </script>
 
+
 <style>
 
 .container { 
-  background-color: #eef5ea;  /* 更亮的灰绿 */
+  background-color: #eef5ea;
   min-height: 100vh; 
   padding-bottom: 70px; 
 }
@@ -320,7 +344,7 @@ export default {
 
 /* ========== 餐次卡片 ========== */
 .meal-card { 
-  background-color: #f7faf5;  /* 很浅的绿白 */
+  background-color: #f7faf5;
   margin: 10px; 
   border-radius: 12px; 
   padding: 15px; 
